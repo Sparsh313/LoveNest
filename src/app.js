@@ -1,27 +1,34 @@
 const express = require("express");
 const app = express();
 
-app.get("/user", (req, res) => {
-  res.send({ Name: "Sparsh", Age: 20, gender: "male" });
-});
-
-app.post("/user", (req, res) => {
-  res.send("Data saved succesfully");
-});
-
-app.patch("/user", (req, res) => {
-  res.send("Data updated succesfully");
-});
-
-app.delete("/user", (req, res) => {
-  res.send("Data deleted succesfully");
-});
-
-app.get("/user/:Id/:name/:pass", (req, res) => {
-  console.log(req.params);
-  // console.log(req.query);
-  res.send({ Name: "Sparsh", Age: 20, gender: "male" });
-});
+app.use(
+  "/user",
+  (req, res, next) => {
+    // res.send("1st");
+    console.log("1st");
+    next();
+  },
+  (req, res, next) => {
+    // res.send("2nd");
+    console.log("2nd");
+    next();
+  },
+  (req, res, next) => {
+    // res.send("3rd");
+    console.log("3rd");
+    next();
+  },
+  (req, res, next) => {
+    // res.send("4th");
+    console.log("4th");
+    next();
+  },
+  (req, res, next) => {
+    res.send("5th");
+    console.log("5th");
+    next();
+  }
+);
 
 app.listen(7777, () => {
   console.log("listening on post 7777");
