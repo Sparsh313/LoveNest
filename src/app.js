@@ -3,20 +3,19 @@ const app = express();
 
 const { adminAuth, userAuth } = require("./middlewares/auth");
 
-app.use("/admin", adminAuth);
+// app.use("/admin", adminAuth);
 
-app.get("/user", userAuth, (req, res, next) => {
-  res.send("user set");
+app.get("/admin", adminAuth, (req, res) => {
+  res.send("HEy Admin");
 });
 
-app.get("/admin/getAlldata", (req, res, next) => {
-  res.send("Admin Data sent");
-  next();
-});
-
-app.get("/admin/deletedata", (req, res, next) => {
-  res.send("Admin Data deleted");
-  next();
+app.get("/userData", userAuth, (req, res, next) => {
+  try {
+    throw new Error("errorsnnfcdk");
+    res.send("user set");
+  } catch (err) {
+    res.status(500).send("Server Maintainace");
+  }
 });
 
 app.listen(7777, () => {
