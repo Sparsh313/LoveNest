@@ -1,23 +1,72 @@
 const express = require("express");
+const connectDB = require("./config/db");
 const app = express();
+const User = require("./model/user");
 
-const { adminAuth, userAuth } = require("./middlewares/auth");
+app.use(express.json());
 
-// app.use("/admin", adminAuth);
-
-app.get("/admin", adminAuth, (req, res) => {
-  res.send("HEy Admin");
-});
-
-app.get("/userData", userAuth, (req, res, next) => {
+app.post("/signup", async (req, res, next) => {
+  const user = new User(req.body);
   try {
-    throw new Error("errorsnnfcdk");
-    res.send("user set");
-  } catch (err) {
-    res.status(500).send("Server Maintainace");
+    await user.save();
+    res.send("User Added sucessfully");
+  } catch {
+    res.status(400).send("Error");
   }
 });
 
-app.listen(7777, () => {
-  console.log("listening on post 7777");
+app.get("/feed", async (req, res, next) => {
+  try {
+    const users = await User.find({});
+    res.send(users);
+  } catch (err) {
+    res.status(401).send("Something went wrong");
+  }
 });
+
+app.get("/user", async (req, res) => {
+  try {
+    const user = await User.findOne({ email: req.body.email });
+    if (!user) {
+      res.status(404).send("no user");
+    } else {
+      res.send(user);
+    }
+  } catch (err) {
+    res.status(401).send("Something went wrong");
+  }
+});
+
+app.delete("/user", async (req, res, next) => {
+  console.log(req.body.userId);
+  const userId = req.body.userId;
+  try {
+    await User.findByIdAndDelete(userId);
+    res.send("User deleted");
+  } catch (err) {
+    res.status(401).send("Something went wrong");
+  }
+});
+
+app.patch("/user", async (req, res, next) => {
+  const userId = req.body.userId;
+
+  const data = req.body;
+  try {
+    await User.findByIdAndUpdate(userId, data);
+    res.send("User updated");
+  } catch (err) {
+    res.status(401).send("Something went wrong");
+  }
+});
+
+connectDB()
+  .then(() => {
+    console.log("DB Successfully connected");
+    app.listen(7777, () => {
+      console.log("listening on post 7777");
+    });
+  })
+  .catch((err) => {
+    console.log("DB not connected");
+  });
