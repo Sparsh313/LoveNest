@@ -10,8 +10,8 @@ app.post("/signup", async (req, res, next) => {
   try {
     await user.save();
     res.send("User Added sucessfully");
-  } catch {
-    res.status(400).send("Error");
+  } catch (err) {
+    res.status(400).send("Error: " + err.message);
   }
 });
 
@@ -50,7 +50,7 @@ app.delete("/user", async (req, res, next) => {
 
 app.patch("/user", async (req, res, next) => {
   const userId = req.body.userId;
-
+  console.log(req.body.userId);
   const data = req.body;
   try {
     await User.findByIdAndUpdate(userId, data);
