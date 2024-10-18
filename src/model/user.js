@@ -1,8 +1,6 @@
 const mongoose = require("mongoose");
+const validator = require("validator");
 
-// Define the schema for the user
-
-// Define the user schema
 const userSchema = new mongoose.Schema(
   {
     name: {
@@ -24,6 +22,12 @@ const userSchema = new mongoose.Schema(
       unique: true,
       trim: true,
       lowercase: true,
+      validate: {
+        validator: function (v) {
+          return validator.isEmail(v);
+        },
+        message: (props) => `${props.value} is not a valid email!`,
+      },
     },
     password: {
       type: String,
@@ -45,6 +49,12 @@ const userSchema = new mongoose.Schema(
     },
     photo: {
       type: String,
+      validate: {
+        validator: function (v) {
+          return validator.isURL(v);
+        },
+        message: (props) => `${props.value} is not a valid URL!`,
+      },
     },
     skills: {
       type: [String],
