@@ -18,3 +18,5 @@ the format of JSON into JS object using Express_in_Built_Middleware :
 [app.use(express.json())]
 
 8>Validation , Data sanitization (mostly used in Post Patch Api)
+
+9>Encryption
