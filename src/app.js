@@ -7,6 +7,15 @@ const bcrypt = require("bcrypt");
 
 app.use(express.json());
 
+app.get("/feed", async (req, res, next) => {
+  try {
+    const users = await User.find({});
+    res.send(users);
+  } catch (err) {
+    res.status(401).send("Something went wrong");
+  }
+});
+
 app.post("/signup", async (req, res, next) => {
   try {
     // Validation
@@ -24,12 +33,28 @@ app.post("/signup", async (req, res, next) => {
   }
 });
 
-app.get("/feed", async (req, res, next) => {
+app.post("/login", async (req, res, next) => {
   try {
-    const users = await User.find({});
-    res.send(users);
+    const { email, password } = req.body;
+
+    console.log(password);
+
+    const user = await User.findOne({ email });
+    console.log(user.password);
+
+    if (!user) {
+      throw new Error("Invalid email or password");
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    if (!isMatch) {
+      throw new Error("Invalid password");
+    } else {
+      res.status(200).send("Login successful");
+    }
   } catch (err) {
-    res.status(401).send("Something went wrong");
+    res.status(500).send("Error: " + err.message);
   }
 });
 

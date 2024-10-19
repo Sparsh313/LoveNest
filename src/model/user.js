@@ -32,7 +32,6 @@ const userSchema = new mongoose.Schema(
     password: {
       type: String,
       required: true,
-      select: false, // Prevents the password from being returned in queries
     },
     gender: {
       type: String,
