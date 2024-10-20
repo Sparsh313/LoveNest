@@ -4,10 +4,14 @@ const app = express();
 const User = require("./model/user");
 const ValidateSignUpData = require("./utils/validation");
 const bcrypt = require("bcrypt");
+const cookieParser = require("cookie-parser");
+const jwt = require("jsonwebtoken");
+const { userAuth } = require("./middlewares/auth");
 
 app.use(express.json());
+app.use(cookieParser());
 
-app.get("/feed", async (req, res, next) => {
+app.get("/feed", userAuth, async (req, res, next) => {
   try {
     const users = await User.find({});
     res.send(users);
@@ -17,15 +21,23 @@ app.get("/feed", async (req, res, next) => {
 });
 
 app.post("/signup", async (req, res, next) => {
+  const { name, email, password, gender, age } = req.body;
+
   try {
     // Validation
     ValidateSignUpData(req, User);
 
     // Encryption
     const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(req.body.password, salt);
+    const hashedPassword = await bcrypt.hash(password, salt);
 
-    const user = new User({ name, email, password: hashedPassword });
+    const user = new User({
+      name,
+      email,
+      password: hashedPassword,
+      gender,
+      age,
+    });
     await user.save();
     res.send("User Added sucessfully");
   } catch (err) {
@@ -33,90 +45,41 @@ app.post("/signup", async (req, res, next) => {
   }
 });
 
+app.get("/profile", userAuth, async (req, res, next) => {
+  try {
+    const user = req.user;
+    res.send(user);
+  } catch (err) {
+    res.status(400).send("ERR::" + err.message);
+  }
+});
+
 app.post("/login", async (req, res, next) => {
   try {
     const { email, password } = req.body;
-
-    console.log(password);
-
     const user = await User.findOne({ email });
-    console.log(user.password);
-
     if (!user) {
-      throw new Error("Invalid email or password");
+      throw new Error("Invalid credentials");
     }
-
-    const isMatch = await bcrypt.compare(password, user.password);
-
-    if (!isMatch) {
+    const isValidPass = await bcrypt.compare(password, user.password);
+    if (!isValidPass) {
       throw new Error("Invalid password");
     } else {
-      res.status(200).send("Login successful");
+      //Create a token
+      const token = jwt.sign({ id: user._id }, "heyy", { expiresIn: "7d" });
+      //Send token in form of cookie
+      res.cookie("token", token);
+      res.send("Login sucessfull");
     }
   } catch (err) {
-    res.status(500).send("Error: " + err.message);
+    res.status(400).send("Err:" + err.message);
   }
 });
 
-app.get("/user", async (req, res) => {
-  try {
-    const user = await User.findOne({ email: req.body.email });
-    if (!user) {
-      res.status(404).send("no user");
-    } else {
-      res.send(user);
-    }
-  } catch (err) {
-    res.status(401).send("Something went wrong");
-  }
-});
-
-app.delete("/user", async (req, res, next) => {
-  console.log(req.body.userId);
-  const userId = req.body.userId;
-  try {
-    await User.findByIdAndDelete(userId);
-    res.send("User deleted");
-  } catch (err) {
-    res.status(401).send("Something went wrong");
-  }
-});
-
-app.patch("/user/:userId", async (req, res, next) => {
-  const userId = req.params.userId;
-  const data = req.body;
-  try {
-    const allowedUpdates = [
-      "userId",
-      "name",
-      "age",
-      "bio",
-      "gender",
-      "skills",
-      "photos",
-    ];
-    const isUpdateAllowed = Object.keys(data).every((key) =>
-      allowedUpdates.includes(key)
-    );
-    if (!isUpdateAllowed) {
-      throw new Error("Update not allowed");
-    }
-
-    console.log(req.body.skills.length);
-
-    const maxSkillsAllowed = 10;
-    if (data.skills.length > maxSkillsAllowed) {
-      throw new Error("You can only add max of 10 skills");
-    }
-
-    const user = await User.findByIdAndUpdate(userId, data, {
-      new: true,
-      runValidators: true,
-    });
-    res.send("User updated");
-  } catch (err) {
-    res.status(401).send("Something went wrong :" + err.message);
-  }
+app.post("/req", userAuth, async (req, res, next) => {
+  const user = req.user;
+  console.log(user.email);
+  res.send(user.name + " send u a frnd req");
 });
 
 connectDB()

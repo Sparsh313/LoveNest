@@ -20,3 +20,14 @@ the format of JSON into JS object using Express_in_Built_Middleware :
 8>Validation , Data sanitization (mostly used in Post Patch Api)
 
 9>Encryption
+
+10>JWT
+
+> instal jsonwebtoken(jwt)
+> create a token =>> jwt.sign({ id: user.id },Secret_key)
+> Send/assign token to user=>> res.cookie("token",token)
+> cookie-parser npm library =>> app.use(cookieParser())
+> Now while calling an api we will request cookie from user and extract token from that
+> now verify the token => jwt.verify(token,Secret_key) =>This will return id of user (hidden msg whie jwt.sign())
+
+> now put all this in auth middleware

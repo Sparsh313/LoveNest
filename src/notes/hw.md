@@ -18,3 +18,11 @@
 
 6>MiddleWare:
 "Middleware is a function that sits between the client request and server response, used for tasks like authentication, logging, and error handling. It acts as a checkpoint to manage and modify requests before they reach the server."
+
+7>JWT
+a>User login (using email password)
+b>server will validate email and password and sends a cookie
+c>that cookie contains jwt token
+d>now whenever user makes a Api call that cookie will follow along with Api call and validate every time
+e>after validating req will be sent to user
+f>This process will be done every time we call an api
