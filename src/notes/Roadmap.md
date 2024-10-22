@@ -29,5 +29,6 @@ the format of JSON into JS object using Express_in_Built_Middleware :
 > cookie-parser npm library =>> app.use(cookieParser())
 > Now while calling an api we will request cookie from user and extract token from that
 > now verify the token => jwt.verify(token,Secret_key) =>This will return id of user (hidden msg whie jwt.sign())
-
 > now put all this in auth middleware
+
+11>Create route handler for refractoring the code
