@@ -31,4 +31,11 @@ the format of JSON into JS object using Express_in_Built_Middleware :
 > now verify the token => jwt.verify(token,Secret_key) =>This will return id of user (hidden msg whie jwt.sign())
 > now put all this in auth middleware
 
-11>Create route handler for refractoring the code
+11>Create route handlers //auth req
+
+12>Connection schema
+//request- validations/rateLimiter/customize msgs
+
+13>Indexing-To prevent server to hang (Fast response)
+
+- Unique-true (index auto true)

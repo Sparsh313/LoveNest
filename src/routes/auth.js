@@ -4,22 +4,19 @@
 
 const express = require("express");
 const authRouter = express.Router();
-const ValidateSignUpData = require("../utils/validation");
+const { ValidateSignUpData } = require("../utils/validation");
 const User = require("../model/user");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
 authRouter.post("/signup", async (req, res, next) => {
   const { name, email, password, gender, age } = req.body;
-
   try {
     // Validation
     ValidateSignUpData(req, User);
-
     // Encryption
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
-
     const user = new User({
       name,
       email,

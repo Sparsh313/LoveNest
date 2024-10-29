@@ -59,13 +59,13 @@ profileRouter.patch("/profile/password", userAuth, async (req, res, next) => {
   }
 });
 
-// profileRouter.get("/feed", userAuth, async (req, res, next) => {
-//   try {
-//     const users = await User.find({});
-//     res.send(users);
-//   } catch (err) {
-//     res.status(401).send("Something went wrong:" + err.message);
-//   }
-// });
+profileRouter.get("/feed", userAuth, async (req, res, next) => {
+  try {
+    const users = await User.find({});
+    res.send(users);
+  } catch (err) {
+    res.status(401).send("Something went wrong:" + err.message);
+  }
+});
 
 module.exports = profileRouter;
