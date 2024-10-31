@@ -14,10 +14,8 @@
 
 ## ConnectionReqRouter
 
--POST /request/send/intrested/:userId
--POST /request/send/ignored/:userId
--POST /request/review/accept/:requestedId
--POST /request/review/reject/:requestedId
+-POST /request/send/:status/:userId
+-POST /request/review/:status/:requestedId
 
 ## UserRouter
 

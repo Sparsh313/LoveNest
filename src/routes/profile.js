@@ -1,7 +1,6 @@
 const express = require("express");
 const profileRouter = express.Router();
 const { userAuth } = require("../middlewares/auth");
-const User = require("../model/user");
 const { ValidateEditProfileData } = require("../utils/validation");
 const { isLocale } = require("validator");
 const bcrypt = require("bcrypt");
@@ -56,15 +55,6 @@ profileRouter.patch("/profile/password", userAuth, async (req, res, next) => {
     });
   } catch (err) {
     res.status(400).send("Err: " + err.message);
-  }
-});
-
-profileRouter.get("/feed", userAuth, async (req, res, next) => {
-  try {
-    const users = await User.find({});
-    res.send(users);
-  } catch (err) {
-    res.status(401).send("Something went wrong:" + err.message);
   }
 });
 
