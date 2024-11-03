@@ -1,9 +1,9 @@
 const mongoose = require("mongoose");
+require("dotenv").config();
 
 const connectDB = async () => {
-  await mongoose.connect(
-    "mongodb+srv://sparshsingh03012003:F5qK97ItOxLFdJg1@cluster.ntch9.mongodb.net/devTinder?tls=true"
-  );
+  await mongoose.connect(process.env.MONGODB_URL),
+    { useNewUrlParser: true, useUnifiedTopology: true };
 };
 
 module.exports = connectDB;
