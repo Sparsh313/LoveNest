@@ -13,7 +13,7 @@
 6>Create [Schema]
 
 7>GET POST PATCH DELETE (/api) to DB from POSTMAN
-[CRUDD]
+[CRUD]
 \*\*\*
 [req.body] jo hai wo undefined show hogaa hameshaa kyuki Node JSON file read ni kr pata uske liye ham ek middleware use krege to change
 the format of JSON into JS object using Express_in_Built_Middleware :

@@ -1,4 +1,4 @@
-// -POST / signup
+// - POST / signup
 // - POST / login
 // - POST / logout
 
@@ -10,7 +10,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
 authRouter.post("/signup", async (req, res, next) => {
-  const { name, email, password, gender, age } = req.body;
+  const { name, email, password, gender, age, photo, bio, skills } = req.body;
   try {
     // Validation
     ValidateSignUpData(req, User);
@@ -23,9 +23,17 @@ authRouter.post("/signup", async (req, res, next) => {
       password: hashedPassword,
       gender,
       age,
+      photo,
+      bio,
+      skills,
     });
-    await user.save();
-    res.send("User Added sucessfully");
+    const savedUser = await user.save();
+    //Create a token
+    const token = await jwt.sign({ id: user._id }, "heyy", { expiresIn: "7d" });
+    //Send token in form of cookie
+    res.cookie("token", token, { expires: new Date(Date.now() + 8000000) });
+
+    res.json({ message: "User Added sucessfully", data: savedUser });
   } catch (err) {
     res.status(400).send("Error: " + err.message);
   }
@@ -46,14 +54,14 @@ authRouter.post("/login", async (req, res, next) => {
       const token = jwt.sign({ id: user._id }, "heyy", { expiresIn: "7d" });
       //Send token in form of cookie
       res.cookie("token", token, { expires: new Date(Date.now() + 8000000) });
-      res.send("Login sucessfull");
+      res.send(user);
     }
   } catch (err) {
     res.status(400).send("Err:" + err.message);
   }
 });
 
-authRouter.post("/logout", async (req, res, next) => {
+authRouter.get("/logout", async (req, res, next) => {
   res.cookie("token", null, { expires: new Date(Date.now()) });
   res.send("Logged out");
 });

@@ -34,7 +34,6 @@ userRouter.get("/user/feed", userAuth, async (req, res, next) => {
       limit = 50;
     }
     const skip = (page - 1) * limit;
-    console.log(req.query.lastUserId);
 
     // Ye code se banda khud ka card hide kr rha aur (sent,recieve) wala hide kre ga
     const users = await User.find({

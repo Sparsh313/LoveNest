@@ -2,12 +2,12 @@ const express = require("express");
 const { userAuth } = require("../middlewares/auth");
 const { connection } = require("mongoose");
 const Connection = require("../model/connection");
-const requestLimiter = require("../middlewares/rateLimit");
+// const requestLimiter = require("../middlewares/rateLimit");
 const User = require("../model/user");
 
 const requestRouter = express.Router();
 
-requestRouter.use(requestLimiter);
+// requestRouter.use(requestLimiter);
 
 requestRouter.post(
   "/request/send/:status/:toUserId",
@@ -36,12 +36,12 @@ requestRouter.post(
           { fromUserId: toUserId, toUserId: fromUserId },
         ],
       });
-      if (existingRequest) {
-        // Agar request already exist karti hai toh message bhejo
-        return res.status(400).json({
-          message: "Connection request already exists",
-        });
-      }
+      // if (existingRequest) {
+      //   // Agar request already exist karti hai toh message bhejo
+      //   return res.status(400).json({
+      //     message: "Connection request already exists",
+      //   });
+      // }
       // IF EVERYTHINGS FINE
       // Build new Connection
       const connectionReq = new Connection({
