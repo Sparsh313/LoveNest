@@ -1,7 +1,3 @@
-// - POST / signup
-// - POST / login
-// - POST / logout
-
 const express = require("express");
 const authRouter = express.Router();
 const { ValidateSignUpData } = require("../utils/validation");
