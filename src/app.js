@@ -9,7 +9,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: process.env.FRONTEND_URL ,
     credentials: true,
   })
 );
@@ -35,7 +35,7 @@ connectDB()
     console.log("DB Successfully connected");
     const port = process.env.PORT || 5173;
     server.listen(port, () => {
-      console.log("listening on post 7777");
+      console.log("listening on post");
     });
   })
   .catch((err) => {

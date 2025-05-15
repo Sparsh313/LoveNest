@@ -15,7 +15,6 @@ userRouter.get("/user/feed", userAuth, async (req, res, next) => {
     const ageRange = 5;
     const minAge = loggedInUser.age - ageRange;
     const maxAge = loggedInUser.age + ageRange;
-    console.log(maxAge, minAge);
 
     // find all connection req (sent,recieve)
     const allUsers = await Connection.find({

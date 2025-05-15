@@ -25,10 +25,14 @@ authRouter.post("/signup", async (req, res, next) => {
     });
     const savedUser = await user.save();
     //Create a token
-    const token = await jwt.sign({ id: user._id }, "heyy", { expiresIn: "7d" });
+    const token = await jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "7d",
+    });
     //Send token in form of cookie
-    res.cookie("token", token, { expires: new Date(Date.now() + 8000000) });
-
+    res.cookie("token", token, {
+      httpOnly: true,
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
     res.json({ message: "User Added sucessfully", data: savedUser });
   } catch (err) {
     res.status(400).send("Error: " + err.message);
@@ -47,9 +51,14 @@ authRouter.post("/login", async (req, res, next) => {
       throw new Error("Invalid password");
     } else {
       //Create a token
-      const token = jwt.sign({ id: user._id }, "heyy", { expiresIn: "7d" });
+      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+        expiresIn: "7d",
+      });
       //Send token in form of cookie
-      res.cookie("token", token, { expires: new Date(Date.now() + 8000000) });
+      res.cookie("token", token, {
+        httpOnly: true,
+        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+      });
       res.send(user);
     }
   } catch (err) {
@@ -58,7 +67,10 @@ authRouter.post("/login", async (req, res, next) => {
 });
 
 authRouter.get("/logout", async (req, res, next) => {
-  res.cookie("token", null, { expires: new Date(Date.now()) });
+  res.cookie("token", null, {
+    httpOnly: true,
+    expires: new Date(Date.now()),
+  });  
   res.send("Logged out");
 });
 module.exports = authRouter;
