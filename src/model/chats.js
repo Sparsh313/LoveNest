@@ -1,3 +1,36 @@
+// const mongoose = require("mongoose");
+
+// const messageSchema = new mongoose.Schema(
+//   {
+//     senderId: {
+//       type: mongoose.Schema.Types.ObjectId,
+//       ref: "User",
+//       required: true,
+//     },
+//     text: {
+//       type: String,
+//       require: true,
+//     },
+//   },
+//   { timestamps: true }
+// );
+
+// const chatSchema = new mongoose.Schema({
+//   participants: [
+//     {
+//       type: mongoose.Schema.Types.ObjectId,
+//       ref: "User",
+//       require: true,
+//     },
+//   ],
+//   messages: [messageSchema],
+// });
+// const Chat = mongoose.model("Chat", chatSchema); //Model
+
+// module.exports = { Chat };
+
+
+
 const mongoose = require("mongoose");
 
 const messageSchema = new mongoose.Schema(
@@ -9,7 +42,7 @@ const messageSchema = new mongoose.Schema(
     },
     text: {
       type: String,
-      require: true,
+      required: true,
     },
   },
   { timestamps: true }
@@ -17,14 +50,11 @@ const messageSchema = new mongoose.Schema(
 
 const chatSchema = new mongoose.Schema({
   participants: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      require: true,
-    },
+    { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   ],
   messages: [messageSchema],
 });
-const Chat = mongoose.model("Chat", chatSchema); //Model
 
-module.exports = { Chat };
+const Chat = mongoose.model("Chat", chatSchema);
+
+module.exports = {Chat};

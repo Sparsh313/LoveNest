@@ -33,7 +33,8 @@ Initializesockets(server);
 connectDB()
   .then(() => {
     console.log("DB Successfully connected");
-    server.listen(7777, () => {
+    const port = process.env.PORT || 5173;
+    server.listen(port, () => {
       console.log("listening on post 7777");
     });
   })
