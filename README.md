@@ -25,31 +25,37 @@ This is the backend service for **LoveNest**, a real-time social matchmaking web
 ## 🗂️ Project Structure
 
 src/
-├── config/ # Database config
+# Database config
+├── config/
 │ └── db.js
 
-├── middlewares/ # Auth & rate limiter
+# Auth & rate limiter
+├── middlewares/ 
 │ ├── auth.js
 │ └── rateLimit.js
 
-├── model/ # Mongoose models
+# Mongoose model
+├── model/ 
 │ ├── chats.js
 │ ├── connection.js
 │ └── user.js
 
-├── routes/ # API endpoints
+# API endpoints
+├── routes/ 
 │ ├── auth.js
 │ ├── chat.js
 │ ├── profile.js
 │ ├── request.js
 │ └── user.js
 
-├── utils/ # Socket setup & validators
+# Socket setup & validators
+├── utils/ 
 │ ├── sockets.js
 │ └── validation.js
-│
-├── app.js # Entry point of the app
-└── .env # Environment variables
+
+# Entry point of the app
+├── app.js
+└── .env 
 
 # 🛠️ Setup Instructions
 
