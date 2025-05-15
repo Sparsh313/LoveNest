@@ -31,6 +31,8 @@ authRouter.post("/signup", async (req, res, next) => {
     //Send token in form of cookie
     res.cookie("token", token, {
       httpOnly: true,
+      secure: true,
+      sameSite: "None",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
     res.json({ message: "User Added sucessfully", data: savedUser });
@@ -57,6 +59,8 @@ authRouter.post("/login", async (req, res, next) => {
       //Send token in form of cookie
       res.cookie("token", token, {
         httpOnly: true,
+        secure: true,
+        sameSite: "None",
         maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
       });
       res.send(user);
@@ -69,6 +73,8 @@ authRouter.post("/login", async (req, res, next) => {
 authRouter.get("/logout", async (req, res, next) => {
   res.cookie("token", null, {
     httpOnly: true,
+    secure: true,
+    sameSite: "None",
     expires: new Date(Date.now()),
   });  
   res.send("Logged out");
