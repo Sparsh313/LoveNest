@@ -27,23 +27,23 @@ This is the backend service for **LoveNest**, a real-time social matchmaking web
 src/
 ├── config/ # Database config
 │ └── db.js
-│
+
 ├── middlewares/ # Auth & rate limiter
 │ ├── auth.js
 │ └── rateLimit.js
-│
+
 ├── model/ # Mongoose models
 │ ├── chats.js
 │ ├── connection.js
 │ └── user.js
-│
+
 ├── routes/ # API endpoints
 │ ├── auth.js
 │ ├── chat.js
 │ ├── profile.js
 │ ├── request.js
 │ └── user.js
-│
+
 ├── utils/ # Socket setup & validators
 │ ├── sockets.js
 │ └── validation.js
