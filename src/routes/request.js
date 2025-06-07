@@ -36,12 +36,12 @@ requestRouter.post(
           { fromUserId: toUserId, toUserId: fromUserId },
         ],
       });
-      // if (existingRequest) {
-      //   // Agar request already exist karti hai toh message bhejo
-      //   return res.status(400).json({
-      //     message: "Connection request already exists",
-      //   });
-      // }
+      if (existingRequest) {
+        // Agar request already exist karti hai toh message bhejo
+        return res.status(400).json({
+          message: "Connection request already exists",
+        });
+      }
       // IF EVERYTHINGS FINE
       // Build new Connection
       const connectionReq = new Connection({
@@ -51,7 +51,7 @@ requestRouter.post(
       });
       // Saving Data
       const data = await connectionReq.save();
-
+      
       // Custom message
       let message;
       if (status === "intrested") {

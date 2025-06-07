@@ -11,7 +11,7 @@ app.use(
   cors({
     origin:
       process.env.FRONTEND_URL ||
-      "https://lovenest-web-git-main-sparsh-singhs-projects-bc893f74.vercel.app",
+      "https://lovenest-r4l5fhjpn-sparsh-singhs-projects-bc893f74.vercel.app/",
     credentials: true,
   })
 );
